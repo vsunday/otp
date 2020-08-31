@@ -7,7 +7,7 @@ const express = require("express"),
       {v4: uuidv4} = require("uuid");
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(require("express-session")({

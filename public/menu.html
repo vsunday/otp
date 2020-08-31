@@ -1,0 +1,118 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>OTP demo</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
+
+    <!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+  <script data-dapp-detection="">
+(function() {
+  let alreadyInsertedMetaTag = false
+
+  function __insertDappDetected() {
+    if (!alreadyInsertedMetaTag) {
+      const meta = document.createElement('meta')
+      meta.name = 'dapp-detected'
+      document.head.appendChild(meta)
+      alreadyInsertedMetaTag = true
+    }
+  }
+
+  if (window.hasOwnProperty('web3')) {
+    // Note a closure can't be used for this var because some sites like
+    // www.wnyc.org do a second script execution via eval for some reason.
+    window.__disableDappDetectionInsertion = true
+    // Likely oldWeb3 is undefined and it has a property only because
+    // we defined it. Some sites like wnyc.org are evaling all scripts
+    // that exist again, so this is protection against multiple calls.
+    if (window.web3 === undefined) {
+      return
+    }
+    __insertDappDetected()
+  } else {
+    var oldWeb3 = window.web3
+    Object.defineProperty(window, 'web3', {
+      configurable: true,
+      set: function (val) {
+        if (!window.__disableDappDetectionInsertion)
+          __insertDappDetected()
+        oldWeb3 = val
+      },
+      get: function () {
+        if (!window.__disableDappDetectionInsertion)
+          __insertDappDetected()
+        return oldWeb3
+      }
+    })
+  }
+})()</script></head>
+<body>
+  <div class="container text-center">
+  <img class="mb-4" src="https://images.freeimages.com/images/large-previews/b3d/flowers-1375316.jpg" alt="" width="320" height="212">
+  <h1 class="h3 mb-3 font-weight-normal" id="title">You are now logged in!</h1>
+  <div class="row">
+    <div class="col h3 text-right">
+      <div class="badge badge-primary text-wrap">Username</div>
+    </div>
+    <div class="col h3 text-left">
+      <div class="font-weight-bold" id="username">...</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col h3 text-right">
+      <div class="badge badge-primary text-wrap">Email Address</div>
+    </div>
+    <div class="col h3 text-left">
+      <div class="font-weight-bold" id="email">...</div>
+    </div>
+  </div>
+  <form action="/otp" method="post">
+    <input type="submit" class="btn btn-dark" value="test">
+  </form>
+  <form action="/logout">
+    <input type="submit" class="btn btn-dark" value="Logout">
+  </form>
+  <p class="mt-5 mb-3 text-muted">©2020</p>
+  </div>
+  </div>
+<script>
+  async function getUsername() {
+    return (await (await fetch("/username")).json())["response"]; 
+  }
+  
+  async function getEmail() {
+    return (await (await fetch("/email")).json())["response"];
+  }
+  
+  (async () => {
+    document.querySelector("#title").innerHTML = (await getUsername()) ? "You are now logged in!" : "You are not logged in";
+    document.querySelector("#username").innerHTML = await getUsername() || "...";
+    document.querySelector("#email").innerHTML = await getEmail() || "...";
+  })();
+</script>
+
+</body></html>
